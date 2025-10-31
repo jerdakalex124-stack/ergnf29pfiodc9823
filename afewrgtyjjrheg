@@ -1,0 +1,118 @@
+-- GenBot UI - Version 2.0
+-- This script is designed to display a UI and copy a link to the clipboard.
+-- NOTE: The auto-copy feature requires a specific execution environment.
+
+--[[ Auto-Copy Functionality ]]--
+-- This line attempts to copy the Discord link to the user's clipboard.
+-- It will only work if the script executor supports the 'setclipboard' function.
+-- If it doesn't, it will error silently and the script will continue.
+pcall(function()
+    setclipboard("https://discord.gg/qYEscrtE4D")
+end)
+
+--[[ Service Variables ]]--
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+local playerGui = localPlayer:WaitForChild("PlayerGui")
+
+--[[ Main UI Container ]]--
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "GenBotGUI"
+screenGui.Parent = playerGui
+screenGui.ResetOnSpawn = false -- UI persists through respawns
+
+-- Main Frame (The background of the UI)
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Parent = screenGui
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5) -- Center the frame
+mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0) -- Position in the center of the screen
+mainFrame.Size = UDim2.new(0, 450, 0, 200)    -- Adjusted size for a more compact look
+mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25) -- A very dark grey, almost black
+mainFrame.BorderSizePixel = 0
+
+-- UI Corner for rounded edges
+local mainFrameCorner = Instance.new("UICorner")
+mainFrameCorner.CornerRadius = UDim.new(0, 12)
+mainFrameCorner.Parent = mainFrame
+
+-- UI Stroke for a clean border
+local mainFrameStroke = Instance.new("UIStroke")
+mainFrameStroke.Color = Color3.fromRGB(150, 0, 0) -- A dark red border
+mainFrameStroke.Thickness = 2
+mainFrameStroke.Parent = mainFrame
+
+--[[ UI Elements Inside the Frame ]]--
+
+-- Title Text ("GenBot")
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Name = "TitleLabel"
+titleLabel.Parent = mainFrame
+titleLabel.Size = UDim2.new(1, 0, 0, 50)
+titleLabel.BackgroundColor3 = Color3.fromRGB(35, 35, 35) -- Slightly lighter than the background
+titleLabel.BorderSizePixel = 0
+titleLabel.Text = "GenBot"
+titleLabel.Font = Enum.Font.GothamSemibold
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+titleLabel.TextSize = 28
+
+-- Add a rounded corner only to the top of the title bar
+local titleCorner = Instance.new("UICorner")
+titleCorner.CornerRadius = UDim.new(0, 12)
+titleCorner.Parent = titleLabel
+
+-- Red Accent Bar under the title
+local accentBar = Instance.new("Frame")
+accentBar.Name = "AccentBar"
+accentBar.Parent = mainFrame
+accentBar.Position = UDim2.new(0, 0, 0, 50)
+accentBar.Size = UDim2.new(1, 0, 0, 3)
+accentBar.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Bright red
+accentBar.BorderSizePixel = 0
+
+-- Informational Text (Now the main focus)
+local infoLabel = Instance.new("TextLabel")
+infoLabel.Name = "InfoLabel"
+infoLabel.Parent = mainFrame
+infoLabel.Position = UDim2.new(0.5, 0, 0.5, 25) -- Centered in the remaining space
+infoLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+infoLabel.Size = UDim2.new(0.9, 0, 0.8, 0)
+infoLabel.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+infoLabel.BackgroundTransparency = 1
+infoLabel.Text = "The Discord server link has been copied to your clipboard.\n\nPlease join to create your own Discord bot without coding & host it for free."
+infoLabel.Font = Enum.Font.SourceSans
+infoLabel.TextColor3 = Color3.fromRGB(220, 220, 220) -- Light grey
+infoLabel.TextSize = 18
+infoLabel.TextWrapped = true
+infoLabel.TextXAlignment = Enum.TextXAlignment.Center
+infoLabel.TextYAlignment = Enum.TextYAlignment.Center
+infoLabel.LineHeight = 1.2 -- Increase line spacing for readability
+
+-- Optional: Add a close button so users can dismiss the UI
+local closeButton = Instance.new("TextButton")
+closeButton.Name = "CloseButton"
+closeButton.Parent = titleLabel -- Place it inside the title bar
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -40, 0.5, 0) -- Top right corner
+closeButton.AnchorPoint = Vector2.new(0.5, 0.5)
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 20
+closeButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+closeButton.BackgroundColor3 = titleLabel.BackgroundColor3
+closeButton.BackgroundTransparency = 1
+
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+closeButton.MouseEnter:Connect(function()
+    closeButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Red on hover
+end)
+
+closeButton.MouseLeave:Connect(function()
+    closeButton.TextColor3 = Color3.fromRGB(200, 200, 200) -- Back to grey
+end)
+
+
+print("GenBot UI Loaded. Attempted to copy link to clipboard.")
